@@ -1,8 +1,7 @@
 package main
 
-import "github.com/maxgonick/go-todo/cmd"
+import "go-todo/cmd"
 
 func main() {
 	cmd.Execute()
 }
-
