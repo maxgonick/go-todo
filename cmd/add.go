@@ -21,18 +21,19 @@ func init() {
 }
 
 var addCommand = &cobra.Command{
-	Use:   "add",
+	Use:   "add <description>",
 	Short: "Add a task",
 	Long:  "Add a task",
 	Run:   add,
+	Args:  cobra.ExactArgs(1),
 }
 
 func add(cmd *cobra.Command, args []string) {
 	fmt.Println("TODO ADD")
-
+	fmt.Println(args[0])
 	todoItem := todoElement{
 		ID:          1,
-		Description: "foo",
+		Description: args[0],
 		CreatedAt:   time.Now(),
 		IsComplete:  false,
 	}
