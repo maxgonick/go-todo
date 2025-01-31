@@ -1,8 +1,13 @@
-package cmd
+package utils
 
-type todoElement struct {
+type TodoElement struct {
 	ID          int    `json:"id"`
 	Description string `json:"description"`
 	CreatedAt   string `json:"createdAt"`
 	IsComplete  bool   `json:"isComplete"`
+}
+
+type TodoList struct {
+	Elements []TodoElement `json:"Elements"`
+	NextId   int           `json:"NextId"`
 }

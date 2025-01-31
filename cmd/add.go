@@ -1,11 +1,9 @@
 package cmd
 
 import (
-	"encoding/json"
-	"fmt"
-	"os"
 	"time"
 
+	"github.com/maxgonick/go-todo/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -22,40 +20,15 @@ var addCommand = &cobra.Command{
 }
 
 func add(cmd *cobra.Command, args []string) {
-	fmt.Println("TODO ADD")
-	fmt.Println(args[0])
-	todoItem := todoElement{
-		ID:          1,
+	todoList := utils.MarshallToJSON(utils.CfgFilePath)
+
+	todoItem := utils.TodoElement{
+		ID:          todoList.NextId,
 		Description: args[0],
 		CreatedAt:   time.Now().Format("2006-01-02 15:04:05"),
 		IsComplete:  false,
 	}
-	fmt.Println(todoItem.CreatedAt)
-	//Marshall into JSON
-	configData, err := os.ReadFile(cfgFilePath)
-	if err != nil {
-		panic(err)
-	}
-	var todoList []todoElement
-
-	if len(configData) == 0 {
-		todoList = []todoElement{}
-	} else {
-		if err := json.Unmarshal(configData, &todoList); err != nil {
-			panic(err)
-		}
-	}
-
-	todoList = append(todoList, todoItem)
-
-	updatedData, err := json.MarshalIndent(todoList, "", "	")
-	if err != nil {
-		panic(err)
-	}
-
-	if err := os.WriteFile(cfgFilePath, updatedData, 0777); err != nil {
-		panic(err)
-	}
-
-	fmt.Println("Successfully added item")
+	todoList.Elements = append(todoList.Elements, todoItem)
+	todoList.NextId++
+	utils.TodoListToDisk(todoList)
 }
