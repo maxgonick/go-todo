@@ -9,13 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type todoElement struct {
-	ID          int       `json:"id"`
-	Description string    `json:"description"`
-	CreatedAt   time.Time `json:"createdAt"`
-	IsComplete  bool      `json:"isComplete"`
-}
-
 func init() {
 	rootCmd.AddCommand(addCommand)
 }
@@ -34,10 +27,10 @@ func add(cmd *cobra.Command, args []string) {
 	todoItem := todoElement{
 		ID:          1,
 		Description: args[0],
-		CreatedAt:   time.Now(),
+		CreatedAt:   time.Now().Format("2006-01-02 15:04:05"),
 		IsComplete:  false,
 	}
-
+	fmt.Println(todoItem.CreatedAt)
 	//Marshall into JSON
 	configData, err := os.ReadFile(cfgFilePath)
 	if err != nil {
